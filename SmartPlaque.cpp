@@ -354,7 +354,7 @@ public:void lancementChauffe(Feu feu, Liquide liquide, Recipient recipient)
 		}
 	}
 
-	//diminution de la temperature de la plaque si elle est superieur a celle demander
+	//Fais redescendre la température si elle dépasse celle demandée
 	if (feu.get_degreCourant() > recipient.get_temperaturEbulitionLiquide())
 	{
 		difference = feu.get_degreCourant() - recipient.get_temperaturEbulitionLiquide();
