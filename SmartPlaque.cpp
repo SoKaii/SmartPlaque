@@ -343,7 +343,7 @@ public:void lancementChauffe(Feu feu, Liquide liquide, Recipient recipient)
 	int difference;
 	int condition = 0;
 
-	//augmentation de la temperature de la plaque jusqua temperature d'�bulition du liquideContenu
+	//Augmente la température jusqu'a la temperature demandee
 	while (feu.get_degreCourant() < recipient.get_temperaturEbulitionLiquide())
 	{
 		feu.chauffe_feu(liquide.get_degreEbullition());
@@ -354,7 +354,7 @@ public:void lancementChauffe(Feu feu, Liquide liquide, Recipient recipient)
 		}
 	}
 
-	//Fais redescendre la température si elle dépasse celle demandée
+	//Fais redescendre la température si elle depasse celle demandee
 	if (feu.get_degreCourant() > recipient.get_temperaturEbulitionLiquide())
 	{
 		difference = feu.get_degreCourant() - recipient.get_temperaturEbulitionLiquide();
@@ -364,13 +364,12 @@ public:void lancementChauffe(Feu feu, Liquide liquide, Recipient recipient)
 	cout << "La plaque est a temperature d'ebulition" << endl;
 	feu.affiche_feu();
 
-	//mise en ebulition du liquide mais  non fonctionnel
+	//Ebullition du liquide
 	time_t compteur;
 	srand(time(NULL));
 	compteur = time(&compteur);
 	float temperature = recipient.get_temperatureLiquideContenu();
 
-	//augmente la temperature du liquide jusqua ebulition
 	while (recipient.get_temperatureLiquideContenu() < recipient.get_temperaturEbulitionLiquide())
 	{
 		feu.maintenirFeu(temperature, compteur, recipient);
@@ -378,7 +377,7 @@ public:void lancementChauffe(Feu feu, Liquide liquide, Recipient recipient)
 		cout << "La temperature du liquide est de " << recipient.get_temperatureLiquideContenu() << " degres" endl;
 	}
 
-	//evaporation du liquide
+	//Evaporation du liquide
 	float diminution = recipient.get_volumeActuel() - (recipient.get_coefficientLiquideContenut() / (recipient.get_coefficientLiquideContenut() - 1));
 	while (recipient.get_volumeActuel() > 0)
 	{
