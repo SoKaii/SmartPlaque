@@ -272,12 +272,12 @@ public: void maintenirFeu(float temperature, time_t compteur, Recipient recipien
 
 public: void evaporationLiquide(time_t f_compteur, float f_diminution, Recipient f_recipient)
 {
-	//Definition du coefficient d'evaporation du liquide
+	//le liquide perdra (coefficient / (coefficient -1) cl par seconde
 	f_diminution = f_recipient.get_volumeActuel() - (f_recipient.get_coefficientLiquideContenut() / (f_recipient.get_coefficientLiquideContenut() - 1));
 
 	cout << f_diminution << endl;
 	f_recipient.set_volumeActuel(f_diminution);
-	//Eviter que la quantite de liquide passe sous 0 
+	//pour eviter que la temperature depace celle d�bulition
 	if (f_recipient.get_volumeActuel() < 0)
 	{
 		f_recipient.set_volumeActuel(0);
