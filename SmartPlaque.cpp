@@ -398,7 +398,7 @@ int main()
 
 	cout << "Quel est le nom du recipient ? : " << endl;
 	cin >> nom;
-	cout << "Quelle est sa capacite maxiemale ? : " << endl;
+	cout << "Quelle est sa capacite maximale ? : " << endl;
 	cin >> capaciteMax;
 	cout << "Quelle est sa matiere ? : " << endl;
 	cin >> matiereRecipient;
@@ -456,5 +456,7 @@ int main()
 	lancement->comparaison(*feu, *liquide, *recipient, *lancement);
 	
 	return 0;
+
+	// Test branche develop
 };
 
