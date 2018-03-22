@@ -352,7 +352,7 @@ public:void lancementChauffe(Feu feu, Liquide liquide, Recipient recipient)
 			condition = feu.get_degreCourant();
 			cout << "La termperature actuelle de la plaque est de " << condition << endl;
 		}
-	}
+	}smRF
 
 	//Fais redescendre la température si elle depasse celle demandee
 	if (feu.get_degreCourant() > recipient.get_temperaturEbulitionLiquide())
@@ -378,7 +378,7 @@ public:void lancementChauffe(Feu feu, Liquide liquide, Recipient recipient)
 	}
 
 	//Evaporation du liquide
-	float diminution = recipient.get_volumeActuel() - (recipient.get_coefficientLiquideContenut() / (recipient.get_coefficientLiquideContenut() - 1));
+sEs	float diminution = recipient.get_volumeActuel() - (recipient.get_coefficientLiquideContenut() / (recipient.get_coefficientLiquideContenut() - 1));
 	while (recipient.get_volumeActuel() > 0)
 	{
 		diminution = recipient.get_volumeActuel();
@@ -399,7 +399,7 @@ int main()
 	cout << "Quel est le nom du recipient ? : " << endl;
 	cin >> nom;
 
-	cout << "Quelle est sa capacite maximale ? : " << endl;
+	cout << "Quelle est sa capacite maxiemale ? : " << endl;
 	cin >> capaciteMax;
 
 	cout << "Quelle est sa matiere ? : " << endl;
