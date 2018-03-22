@@ -454,9 +454,8 @@ int main()
 	
 	Lancement *lancement = new Lancement();
 	lancement->comparaison(*feu, *liquide, *recipient, *lancement);
-	
-	return 0;
-
 	// Test branche master
+	return 0;
+	
 };
 
