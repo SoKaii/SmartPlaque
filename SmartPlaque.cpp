@@ -456,11 +456,6 @@ int main()
 	lancement->comparaison(*feu, *liquide, *recipient, *lancement);
 	// Test branche master
 	return 0;
-<<<<<<< HEAD
-	
-=======
 
-	// Test branche develop
->>>>>>> develop
 };
 
