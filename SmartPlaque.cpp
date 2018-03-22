@@ -352,7 +352,7 @@ public:void lancementChauffe(Feu feu, Liquide liquide, Recipient recipient)
 			condition = feu.get_degreCourant();
 			cout << "La termperature actuelle de la plaque est de " << condition << endl;
 		}
-	}smRF
+	}
 
 	//Fais redescendre la température si elle depasse celle demandee
 	if (feu.get_degreCourant() > recipient.get_temperaturEbulitionLiquide())
@@ -374,11 +374,11 @@ public:void lancementChauffe(Feu feu, Liquide liquide, Recipient recipient)
 	{
 		feu.maintenirFeu(temperature, compteur, recipient);
 		temperature = recipient.get_temperatureLiquideContenu();
-		cout << "La temperature du liquide est de " << recipient.get_temperatureLiquideContenu() << " degres" endl;
+		cout << "La temperature du liquide est de " << recipient.get_temperatureLiquideContenu() << " degres" << endl;
 	}
 
 	//Evaporation du liquide
-sEs	float diminution = recipient.get_volumeActuel() - (recipient.get_coefficientLiquideContenut() / (recipient.get_coefficientLiquideContenut() - 1));
+	float diminution = recipient.get_volumeActuel() - (recipient.get_coefficientLiquideContenut() / (recipient.get_coefficientLiquideContenut() - 1));
 	while (recipient.get_volumeActuel() > 0)
 	{
 		diminution = recipient.get_volumeActuel();
@@ -398,10 +398,8 @@ int main()
 
 	cout << "Quel est le nom du recipient ? : " << endl;
 	cin >> nom;
-
 	cout << "Quelle est sa capacite maxiemale ? : " << endl;
 	cin >> capaciteMax;
-
 	cout << "Quelle est sa matiere ? : " << endl;
 	cin >> matiereRecipient;
 
@@ -410,14 +408,20 @@ int main()
 
 	int degre;
 	double coefficientEbulition;
+	int quantite;
 
 	cout << "Quel est le nom du liquide ? : " << endl;
 	cin >> nom;
-
 	cout << "Quel est sa temperature d'ebullition ? : '" << endl;
 	cin >> degre;
 	cout << "Quel est son coefficient d'ebullition (degre/seconde pour 1 cL) ? : '" << endl;
+	cin >> coefficientEbulition;
+
+	Liquide *liquide = new Liquide(nom,degre,coefficientEbulition);
+	liquide->afficheur_liquide();
 	
+	cout << "Quelle quantite de liquide souhaitez vous ajouter ? : " << endl;
+	cin >> quantite;
 	recipient->set_remplir(*liquide, quantite);
 	
 	if (recipient->get_capaciteMax()<recipient->get_volumeActuel())
