@@ -49,11 +49,6 @@ public: void set_temperatureDuLiquide(float l_temperature)
 	temperatureLiquide = l_temperature;
 };
 
-public: void set_nom_liquide(string nom)
-{
-	nomLiquide = nom;
-};
-
 public: void afficheur_liquide()
 {
 	cout << nomLiquide <<  " qui bout a " << degreEbullition << endl;
