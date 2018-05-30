@@ -1,0 +1,14 @@
+C:\Users\formation\Desktop\Thomas MARTIN SIO1\SmartPlaque\SmartPlaque\bin\Debug\SmartPlaque.exe.config
+C:\Users\formation\Desktop\Thomas MARTIN SIO1\SmartPlaque\SmartPlaque\bin\Debug\SmartPlaque.exe
+C:\Users\formation\Desktop\Thomas MARTIN SIO1\SmartPlaque\SmartPlaque\bin\Debug\SmartPlaque.pdb
+C:\Users\formation\Desktop\Thomas MARTIN SIO1\SmartPlaque\SmartPlaque\obj\Debug\SmartPlaque.csprojResolveAssemblyReference.cache
+C:\Users\formation\Desktop\Thomas MARTIN SIO1\SmartPlaque\SmartPlaque\obj\Debug\SmartPlaque.csproj.CoreCompileInputs.cache
+C:\Users\formation\Desktop\Thomas MARTIN SIO1\SmartPlaque\SmartPlaque\obj\Debug\SmartPlaque.exe
+C:\Users\formation\Desktop\Thomas MARTIN SIO1\SmartPlaque\SmartPlaque\obj\Debug\SmartPlaque.pdb
+C:\Users\formation\Desktop\Thomas MARTIN SIO1\SmartPlaque Test réorg\SmartPlaque\bin\Debug\SmartPlaque.exe.config
+C:\Users\formation\Desktop\Thomas MARTIN SIO1\SmartPlaque Test réorg\SmartPlaque\bin\Debug\SmartPlaque.exe
+C:\Users\formation\Desktop\Thomas MARTIN SIO1\SmartPlaque Test réorg\SmartPlaque\bin\Debug\SmartPlaque.pdb
+C:\Users\formation\Desktop\Thomas MARTIN SIO1\SmartPlaque Test réorg\SmartPlaque\obj\Debug\SmartPlaque.csprojResolveAssemblyReference.cache
+C:\Users\formation\Desktop\Thomas MARTIN SIO1\SmartPlaque Test réorg\SmartPlaque\obj\Debug\SmartPlaque.csproj.CoreCompileInputs.cache
+C:\Users\formation\Desktop\Thomas MARTIN SIO1\SmartPlaque Test réorg\SmartPlaque\obj\Debug\SmartPlaque.exe
+C:\Users\formation\Desktop\Thomas MARTIN SIO1\SmartPlaque Test réorg\SmartPlaque\obj\Debug\SmartPlaque.pdb
