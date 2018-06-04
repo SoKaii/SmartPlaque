@@ -76,7 +76,7 @@ namespace SmartPlaque
                     tempMatiere = String.Format("{0}", readerF[2]);
                     tempMatiere = tempMatiere.Trim();
 
-                    temp = String.Format("{1} {2} {3}", readerF[0], tempName, tempMatiere, readerF[3]);
+                    temp = String.Format("{1} {2} {3} {4}", readerF[0], tempName, tempMatiere, readerF[3],readerF[4]);
                     tabFeu[index] = temp;
                     index++;
                 }
@@ -282,7 +282,6 @@ namespace SmartPlaque
             marque = tabSFeu[0];
             matiereFeu = tabSFeu[1];
             modele = tabSFeu[2];
-
             vitesse_chauffe = int.Parse(tabSFeu[3]);
 
             Feu feu = new Feu(marque, matiereFeu, modele, vitesse_chauffe);
