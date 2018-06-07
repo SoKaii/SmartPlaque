@@ -14,173 +14,169 @@ namespace SmartPlaque
 
     class DAO
     {
-        private string[] tabLiquide = new string[80];
-        private string[] tabRecipient = new string[80];
-        private string[] tabFeu = new string[80];
-        private string temp;
-        private int index = 0;
-        private int nbrLignes = 0;
-        private string connexion_string = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\SampledB.mdf;Integrated Security=True";
-        private string tempName;
-        private string tempMatiere;
+        private string[] tabLiquide = new string[80]; // Création d'un tableau de string qui receptionnera les liquides
+        private string[] tabRecipient = new string[80]; // Création d'un tableau de string qui receptionnera les recipients
+        private string[] tabFeu = new string[80]; // Création d'un tableau de string qui receptionnera les feux
+        private string temp; // Création d'un string temporaire pour effectuer le transfert entre la DB et les tableaux 
+        private int index = 0; // Création d'un index permettant de naviguer dans les tableaux afin de les remplir 
+        private string connexion_string = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\SampledB.mdf;Integrated Security=True"; // Création d'un string permettant d'ouvrir la dB avec des parametres prédéfinis 
+        private string tempName; // Création d'un string permettant de trim le nom avant de le stocker dans le tableau 
+        private string tempMatiere; // Création d'un string permettant de trim la matiere avant de la stocker dans le tableaus  
 
         public DAO()
         {
             try
             {
-                SqlConnection MyConnection = new SqlConnection(connexion_string);
-                MyConnection.Open();
+                SqlConnection MyConnection = new SqlConnection(connexion_string); // Ouverture d'une connexion à la dB avec la connexion_string en parametres
+                MyConnection.Open(); // Activation de la connexion
 
-                SqlCommand cmdLiquide = new SqlCommand("Select * from Liquide");
-                cmdLiquide.Connection = MyConnection;
-                SqlDataReader readerL = cmdLiquide.ExecuteReader();  // Objet recevant les résultats (curseur de lecture comme la lecture de fichier)
+                SqlCommand cmdLiquide = new SqlCommand("Select * from Liquide"); // Création de la requete SQL permettant de récuperer tous les liquides stockés dans la dB
+                cmdLiquide.Connection = MyConnection; // Lancement de la requete
+                SqlDataReader readerL = cmdLiquide.ExecuteReader();  // Récupération des résultats de la requete dans un Reader 
 
-                while (readerL.Read())
+                while (readerL.Read()) // Tant que le reader voit quelque chose 
                 {
-                    tempName = String.Format("{0}", readerL[1]);
-                    tempName = tempName.Trim();
+                    tempName = String.Format("{0}", readerL[1]); // tempName recupere le nom dans le resultat de la requete
+                    tempName = tempName.Trim(); // trim de tempName permettant de supprimer les espaces inutiles
 
-                    temp = String.Format("{1} {2} {3}", readerL[0], tempName, readerL[2], readerL[3]);
-                    tabLiquide[index] = temp;
-                    index++;
+                    temp = String.Format("{1} {2} {3}", readerL[0], tempName, readerL[2], readerL[3]); // temp recupere le resultat de la requete
+                    tabLiquide[index] = temp; // remplissage du tableau final avec temp 
+                    index++; // Incrémentation de l'index permettant de naviguer dans le tableau
                 }
-                index = 0;
-                readerL.Close();
+                index = 0; // Remise a 0 de l'index afin de pouvoir le réutiliser 
+                readerL.Close(); // Fermeture du Reader et donc de la requete 
 
 
-                SqlCommand cmdRecipient = new SqlCommand("Select * from Recipient");
-                cmdRecipient.Connection = MyConnection;
-                SqlDataReader readerR = cmdRecipient.ExecuteReader();  // Objet recevant les résultats (curseur de lecture comme la lecture de fichier)
+                SqlCommand cmdRecipient = new SqlCommand("Select * from Recipient"); // Création de la requete SQL permettant de récuperer tous les recipients stockés dans la dB
+                cmdRecipient.Connection = MyConnection; // Lancement de la requete
+                SqlDataReader readerR = cmdRecipient.ExecuteReader();  // Récupération des résultats de la requete dans un Reader 
 
-                while (readerR.Read())
+                while (readerR.Read()) // Tant que le reader voit quelque chose 
                 {
-                    tempName = String.Format("{0}", readerR[1]);
-                    tempName = tempName.Trim();
+                    tempName = String.Format("{0}", readerR[1]); // tempName recupere le nom dans le resultat de la requete
+                    tempName = tempName.Trim(); // trim de tempName permettant de supprimer les espaces inutiles
 
-                    temp = String.Format("{1} {2} {3}", readerR[0], tempName, readerR[2], readerR[3]);
-                    tabRecipient[index] = temp;
-                    index++;
+                    temp = String.Format("{1} {2} {3}", readerR[0], tempName, readerR[2], readerR[3]); // temp recupere le resultat de la requete
+                    tabRecipient[index] = temp; // remplissage du tableau final avec temp 
+                    index++; // Incrémentation de l'index permettant de naviguer dans le tableau
                 }
-                index = 0;
-                readerR.Close();
+                index = 0; // Remise a 0 de l'index afin de pouvoir le réutiliser 
+                readerR.Close(); // Fermeture du Reader et donc de la requete 
 
 
-                SqlCommand cmdFeu = new SqlCommand("Select * from Feu");
-                cmdFeu.Connection = MyConnection;
-                SqlDataReader readerF = cmdFeu.ExecuteReader();  // Objet recevant les résultats (curseur de lecture comme la lecture de fichier)
+                SqlCommand cmdFeu = new SqlCommand("Select * from Feu"); // Création de la requete SQL permettant de récuperer tous les feux stockés dans la dB
+                cmdFeu.Connection = MyConnection; // Lancement de la requete
+                SqlDataReader readerF = cmdFeu.ExecuteReader();  // Récupération des résultats de la requete dans un Reader 
 
-                while (readerF.Read())
+                while (readerF.Read()) // Tant que le reader voit quelque chose 
                 {
-                    tempName = String.Format("{0}", readerF[1]);
-                    tempName = tempName.Trim();
-                    tempMatiere = String.Format("{0}", readerF[2]);
-                    tempMatiere = tempMatiere.Trim();
+                    tempName = String.Format("{0}", readerF[1]); // tempName recupere le nom dans le resultat de la requete
+                    tempName = tempName.Trim(); // trim de tempName permettant de supprimer les espaces inutiles
+                    tempMatiere = String.Format("{0}", readerF[2]); // tempMatiere recupere le nom dans le resultat de la requete
+                    tempMatiere = tempMatiere.Trim(); // trim de tempMatiere permettant de supprimer les espaces inutiles
 
-                    temp = String.Format("{1} {2} {3} {4}", readerF[0], tempName, tempMatiere, readerF[3],readerF[4]);
-                    tabFeu[index] = temp;
-                    index++;
+                    temp = String.Format("{1} {2} {3} {4}", readerF[0], tempName, tempMatiere, readerF[3],readerF[4]); // temp recupere le resultat de la requete
+                    tabFeu[index] = temp; // remplissage du tableau final avec temp 
+                    index++; // Incrémentation de l'index permettant de naviguer dans le tableau
                 }
-                index = 0;
-                readerF.Close();
+                index = 0; // Remise a 0 de l'index afin de pouvoir le réutiliser 
+                readerF.Close(); // Fermeture du Reader et donc de la requete 
             }
-            catch (Exception e)
+            catch (Exception e) // Si l'ouverture de la dB est impossible 
             {
-                Console.WriteLine(e.Message);
-                RecupViaTxt();
+                Console.WriteLine(e.Message); // Afficher le message d'erreur renvoyé 
+                RecupViaTxt(); // Lancer la récupération via les fichiers locaux 
             }
         }
 
         public void RecupViaTxt()
         {
-            string[] p_path = new string[3];
-            p_path[0] = "Liquides.txt";
-            p_path[1] = "Recipients.txt";
-            p_path[2] = "Feux.txt";
+            string[] p_path = new string[3]; // Création d'un tableau qui contiendra les chemins d'accès aux fichiers
+            p_path[0] = "Liquides.txt"; // Configuration du tableau 
+            p_path[1] = "Recipients.txt"; // Configuration du tableau 
+            p_path[2] = "Feux.txt"; // Configuration du tableau 
 
             Console.WriteLine("\n TENTATIVE DE RECUPERATION VIA LES FICHIERS LOCAUX\n");
 
             try
             {
-                StreamReader dao = new StreamReader(p_path[0]);
+                StreamReader dao = new StreamReader(p_path[0]); // Ouverture du fichier via un StreamReader que l'on nomme dao
 
-                if (dao != null)
+                if (dao != null) // Si le fichier contient quelque chose
                 {
-                    temp = dao.ReadLine();
+                    temp = dao.ReadLine(); // temp prend la valeur de la première ligne
 
-                    while (temp != null)
+                    while (temp != null) // Tant que temp contient quelque chose
                     {
-                        tabLiquide[index] = temp;
-                        temp = dao.ReadLine();
-                        nbrLignes++;
-                        index++;
+                        tabLiquide[index] = temp; // Remplissage du tableau de liquide avec le contenu de Temp 
+                        temp = dao.ReadLine(); // temp prend la valeur de la ligne suivante 
+                        index++; // Incrémentation de l'index afin de pointer sur la case suivante du tableau 
                     }
                 }
-                dao.Close();
+                dao.Close(); // Fermeture du fichier
             }
-            catch (Exception e)
+            catch (Exception e) // Si le fichier ne s'ouvre pas / mal 
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e.Message); // Affichage du message d'erreur 
             }
 
 
             try
             {
-                StreamReader dao = new StreamReader(p_path[1]);
+                StreamReader dao = new StreamReader(p_path[1]); // Ouverture du fichier via un StreamReader que l'on nomme dao
 
-                if (dao != null)
+                if (dao != null) // Si le fichier contient quelque chose
                 {
-                    temp = dao.ReadLine();
+                    temp = dao.ReadLine(); // temp prend la valeur de la premiere ligne 
 
-                    while (temp != null)
+                    while (temp != null) // Tant que temp contient quelque chose 
                     {
-                        tabRecipient[index] = temp;
-                        temp = dao.ReadLine();
-                        nbrLignes++;
-                        index++;
+                        tabRecipient[index] = temp; // Remplissage du contenu de Recipient avec le contenu de Temp 
+                        temp = dao.ReadLine(); // temp prend la valeur de la ligne suivante 
+                        index++; // Incrémentation de l'index afin de pointer sur la case suivante du tableau 
                     }
                 }
-                dao.Close();
+                dao.Close(); // Fermeture du fichier 
             }
-            catch (Exception e)
+            catch (Exception e) // Si le fichier ne s'ouvre pas / mal 
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e.Message); // Affichage du message d'erreur 
             }
 
             try
             {
-                StreamReader dao = new StreamReader(p_path[2]);
+                StreamReader dao = new StreamReader(p_path[2]); // Ouverture du fichier via un StreamReader que l'on nomme dao
 
-                if (dao != null)
+                if (dao != null) // Si le fichier contient quelque chose
                 {
-                    temp = dao.ReadLine();
+                    temp = dao.ReadLine(); // temp prend la valeur de la premiere ligne 
 
-                    while (temp != null)
+                    while (temp != null) // Tant que temp contient quelque chose 
                     {
-                        tabFeu[index] = temp;
-                        temp = dao.ReadLine();
-                        nbrLignes++;
-                        index++;
+                        tabFeu[index] = temp; // Remplissage du contenu de Recipient avec le contenu de Temp 
+                        temp = dao.ReadLine(); // temp prend la valeur de la ligne suivante 
+                        index++; // Incrémentation de l'index afin de pointer sur la case suivante du tableau 
                     }
                 }
-                dao.Close();
+                dao.Close(); // Fermeture du fichier 
             }
-            catch (Exception e)
+            catch (Exception e) // Si le fichier ne s'ouvre pas / mal 
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e.Message); // Affichage du message d'erreur 
             }
         }
 
-        public string[] getTabLiquide()
+        public string[] getTabLiquide() // Permet de récuperer le tableau de Liquides
         {
             return tabLiquide;
         }
 
-        public string[] getTabRecipient()
+        public string[] getTabRecipient() // Permet de récuperer le tableau de Recipients 
         {
             return tabRecipient;
         }
 
-        public string[] getTabFeu()
+        public string[] getTabFeu() // Permet de récuperer le tableau de Feux 
         {
             return tabFeu;
         }
