@@ -11,6 +11,15 @@ using System.Configuration;
 
 namespace SmartPlaque
 {
+    static class Constants
+    {
+        public const Char ExpActif = '0';
+        public const Char Comparaison = '1';
+        public const Char feuAllumer = '2';
+        public const Char Phase = '3';
+        public const Char evaporation = '4';
+        public const Char ExpTerminer = '5';
+    }
 
     class DAO
     {
@@ -76,7 +85,7 @@ namespace SmartPlaque
                     tempMatiere = String.Format("{0}", readerF[2]);
                     tempMatiere = tempMatiere.Trim();
 
-                    temp = String.Format("{1} {2} {3}", readerF[0], tempName, tempMatiere, readerF[3]);
+                    temp = String.Format("{1} {2} {3} {4}", readerF[0], tempName, tempMatiere, readerF[3],readerF[4]);
                     tabFeu[index] = temp;
                     index++;
                 }
@@ -195,28 +204,46 @@ namespace SmartPlaque
         private string[] tabLiquide;
         private string[] tabRecipient;
         private string[] tabFeu;
+        private string message;
+        private char statut;
 
+        //*** Pas dattributs ***//
+        //*** Constructeur vide ***//
+        //public Lancement() { }
+        //*** Constructeur surchargé ***//
 
         public Lancement()
         {
-            DAO load = new DAO();
-            tabRecipient = load.getTabRecipient();
-            tabLiquide = load.getTabLiquide();
-            tabFeu = load.getTabFeu();
+            string path = "C:\\temp\\f1.txt";   // A reprendre !!!
+            DAO daoLiquide = new DAO(path);
+            tabLiquide = daoLiquide.getTab();
+
+            path = "C:\\temp\\recipient.txt";
+            DAO daoRecipient = new DAO(path);
+            tabRecipient = daoRecipient.getTab();
+
+            path = "C:\\temp\\feu.txt";
+            DAO daoFeu = new DAO(path);
+            tabFeu = daoFeu.getTab();
         }
 
         public Lancement(string[] listeRecipient, string[] listeLiquide, string[] listeFeu)
+
         {
-            DAO load = new DAO();
+            string path = "C:\\temp\\f1.txt";
+            DAO daoLiquide = new DAO(path);
+            tabLiquide = daoLiquide.getTab();
+            listeLiquide = daoLiquide.getTab();
 
-            tabRecipient = load.getTabRecipient();
-            listeRecipient = load.getTabRecipient();
+            path = "C:\\temp\\recipient.txt";
+            DAO daoRecipient = new DAO(path);
+            tabRecipient = daoRecipient.getTab();
+            listeRecipient = daoRecipient.getTab();
 
-            tabLiquide = load.getTabLiquide();
-            listeLiquide = load.getTabLiquide();
-
-            tabFeu = load.getTabFeu();
-            listeFeu = load.getTabFeu();
+            path = "C:\\temp\\feu.txt";
+            DAO daoFeu = new DAO(path);
+            tabFeu = daoFeu.getTab();
+            listeFeu = daoFeu.getTab();
         }
 
         public void Activation(int p_indiceRecipient, int p_indiceLiquide, int p_indiceFeu)  // Ajout du JL du 28/05/2018
@@ -224,25 +251,39 @@ namespace SmartPlaque
             recupereLiquide(p_indiceLiquide);
             recupereFeu(p_indiceFeu);
             recupereRecipient(p_indiceRecipient);
-
             comparaison();
         }
+        //*** comparaison de la matiere du recipient et de celui du feu ***//
+
+
 
         private void comparaison()
+
         {
-            string matiereFeu = a_feu.get_matiereFeu().Trim();
+            string matiereFeu = a_feu.get_matiereFeu();
             string matiereRecipient = a_recipient.get_matiereRecipient().Trim();
 
             if (matiereFeu == matiereRecipient)
+
             {
+
+
                 lancementChauffe();
+
             }
+
             else
+
             {
-                Console.WriteLine("Le feu et le recipient ne sont pas de meme matiere, lancement impossible");
+
+                message = "Incompatibilité détectée.";
+                statut = Constants.Comparaison;
             }
         }
 
+
+
+        //*** tout le processus de chauffe apres la comparaison des materiaux ***//
         private void recupereLiquide(int choixLiquide)
         {
             int i = 0;
@@ -276,13 +317,11 @@ namespace SmartPlaque
             string modele;
             char delimiteur = ';';
 
-            string[] tabSFeu = new string[4];
-            tabSFeu = tabFeu[choixFeu].Split(delimiteur);
+            string[] tabSFeu = tabFeu[choixFeu].Split(delimiteur);
 
             marque = tabSFeu[0];
             matiereFeu = tabSFeu[1];
             modele = tabSFeu[2];
-
             vitesse_chauffe = int.Parse(tabSFeu[3]);
 
             Feu feu = new Feu(marque, matiereFeu, modele, vitesse_chauffe);
@@ -315,6 +354,9 @@ namespace SmartPlaque
             a_recipient = recipient;
         }
 
+        // getTabRecipient -> camelCase
+        // get_tab_recipient
+
         public string[] get_tabRecipient()
         {
             return tabRecipient;
@@ -327,7 +369,6 @@ namespace SmartPlaque
             recupereFeu(p_choixFeu);
             versement(p_quantite);
         }
-
         private void versement(int quantite)
         {
             a_recipient.set_remplir(a_liquide, quantite);
@@ -335,13 +376,20 @@ namespace SmartPlaque
         }
 
         public void lancementChauffe()
+
         {
+
             int difference;
+
             int condition = 0;
+
+            //recipient sur feu et allumage du feu
+
+
 
             a_feu.set_PutOnFire(a_recipient);
             a_feu.affiche_feu();
-
+            //augmentation de la temperature de la plaque jusqua temperature d'ï¿½bulition du liquideContenu
             while (a_feu.get_degreCourant() < a_recipient.get_temperaturEbulitionLiquide())
             {
                 a_feu.chauffe_feu(a_liquide.get_degreEbullition());
@@ -354,16 +402,23 @@ namespace SmartPlaque
                 }
             }
 
+            //diminution de la temperature de la plaque si elle est superieur a celle demander
             if (a_feu.get_degreCourant() > a_recipient.get_temperaturEbulitionLiquide())
             {
                 difference = a_feu.get_degreCourant() - a_recipient.get_temperaturEbulitionLiquide();
                 Console.WriteLine("La temperature va baisser de: {0} \n", difference);
                 a_feu.set_degreCourant(difference);
+
             }
+
             a_feu.affiche_feu();
+            //mise en ebulition du liquide mais  non fonctionnel
+            // time_t compteur;
+            // srand(time(null));
+            // compteur = time(&compteur);
 
             double temperature = a_recipient.get_temperatureLiquideContenu();
-
+            //augmente la temperature du liquide jusqua ebulition
             while (a_recipient.get_temperatureLiquideContenu() < a_recipient.get_temperaturEbulitionLiquide())
             {
                 a_feu.maintenirFeu(temperature);
@@ -371,23 +426,38 @@ namespace SmartPlaque
                 Console.WriteLine("La temperature du liquide est de {0} degrés \n", a_recipient.get_temperatureLiquideContenu());
             }
 
+
+            //evaporation du liquide
             double diminution = a_recipient.get_volumeActuel();
             while (a_recipient.get_volumeActuel() > 0)
             {
+                //le liquide perdra (coefficient / (coefficient -1) cl par seconde
                 diminution = a_recipient.get_volumeActuel() - (a_recipient.get_coefficientLiquideContenut() / (a_recipient.get_coefficientLiquideContenut() - 1));
                 a_recipient.set_volumeActuel(diminution);
-
+                //pour eviter que la temperature depace celle dï¿½bulition
                 if (a_recipient.get_volumeActuel() < 0)
                 {
                     a_recipient.set_volumeActuel(0);
                 }
 
+                //compteur = time(&compteur);
                 System.Threading.Thread.Sleep(1000);
-                Console.WriteLine("Le recipient contient actuellement {0}  cl \n", a_recipient.get_volumeActuel());
+                message = "Le recipient contient actuellement" + a_recipient.get_volumeActuel() + "\n";
             }
             Console.ReadLine();
+
+        }
+        public string get_message()
+        {
+            return message;
+        }
+
+        public char get_statut()
+        {
+            return statut;
         }
     };
+
 
     class IHM
     {
@@ -409,9 +479,14 @@ namespace SmartPlaque
         int liqpnumb;
         int feunumb;
         int Qte_Liq;
+        private string affichage;
 
+        //--------------------------------------------------------------------------------------------------------  
+
+        // constructeur qui permet de creer une nouveau "gateau" avec le moule "IHM"
         public IHM()
         {
+
             experiance = new Lancement();
 
             recipients = experiance.get_tabRecipient();
@@ -419,112 +494,183 @@ namespace SmartPlaque
             feux = experiance.get_tabFeu();
 
             afficheListeRecipient();
-            demanderRecipient();
+            // demandeFeu();            // ERREUR de désignation méthode - 28/05/2017
+            demanderRecipient();        // Ajout JL du 28/05/2018
 
             afficheListeLiquide();
             demanderLiquide();
 
             afficheListeFeu();
             demandeFeu();
-
             demandeVersement();
-
+            // Ajout JL du 28/05/2018: Activation de l'expérience à ce niveau  :) !!!. La question est de savoir à partir de quelle méthode...(fournie par Ewan)
             experiance.affectationChoix(recipnumb, liqpnumb, feunumb, Qte_Liq);
+
+            while (Constants.ExpActif != Constants.ExpTerminer)
+            {
+                System.Threading.Thread.Sleep(2000);
+                affichage = experiance.get_message();
+                Console.WriteLine(affichage);
+                a_statut = experiance.get_statut();
+                switch (a_statut)
+                {
+
+                }
+            }
 
 
         }
-
+        //--------------------------------------------------------------------------------------------------------  
+        //création Fonction pour le choix du recipient
         private void demanderRecipient()
         {
+            // int i = 0;
+            Console.WriteLine();
             Console.WriteLine("Inscrivez le numéro du récipient choisis :\n ");
             recipnumb = Int32.Parse(Console.ReadLine());
 
+            //Console.WriteLine("Vous avez choisi " + recipnumb);  Ajout JL du 28/05/2018
+            // recupere le recipient choisi par rapport à son numero
+            // recipientSelectionner = recipients[recipnumb].ToString().Split(';'); 
+            // Console.WriteLine("Vous avez : " + recipients[recipnumb].ToString()); Ajout JL du 28/05/2018
             recipientSelectionner = recipients[recipnumb].ToString().Split(';');
+
+            // creer une variable qui recupere a la premiere position du tableau le nom du recipient
             nomRecipientSelectionner = recipientSelectionner[0];
 
+            // recipient choisis
+            // Console.WriteLine("Vous avez choisi un/une " + recipientSelectionner);  // ERREUR de désignation de variable
             Console.WriteLine("Vous avez choisi un/une " + nomRecipientSelectionner); // Ajout JL du 28/05/2018
         }
 
+        //--------------------------------------------------------------------------------------------------------      
+        //Création fonction pour afficher chaque recepient
         private void afficheListeRecipient()
         {
+            // creer une variable i qui stocke le nombre de tours
             int i = 0;
 
+            // boucle qui recupere chaque element
             while (recipients[i] != null)
             {
-
+                // creer une variable qui stocke la chaine entiere qui contient les informatins
                 string[] chainedRecipients = recipients[i].ToString().Split(';');
+
+                // creer une variable qui recupere a la premiere position du tableau le nom du recipient
                 string nomRecipient = chainedRecipients[0];
+
+                //Creation de variable la capmax
                 string capaciteMax = chainedRecipients[1];
+
+                //Creation de variable matiere
                 string matiereRecipient = chainedRecipients[2];
 
+                // affiche la valeur de la chaine
                 Console.WriteLine(i + ") " + nomRecipient + ", de capacité max : " + capaciteMax + ", " + matiereRecipient);
 
+                // on ajoute 1 à i pour chaque fin de tour de boucle
                 i = i + 1;
             }
-        }
 
+        }
+        //--------------------------------------------------------------------------------------------------------  
+        //Création fonction pour afficher chaque liquide
         private void afficheListeLiquide()
         {
+            // creer une variable i qui stocke le nombre de tours
             int i = 0;
 
+            // boucle qui recupere chaque element
             while (liquides[i] != null)
             {
-
+                // creer une variable qui stocke la chaine entiere qui contient les informatins
                 string[] chainedLiquides = liquides[i].ToString().Split(';');
+
+                // creer une variable qui recupere a la premiere position du tableau le nom du recipient
                 string nomLiquide = chainedLiquides[0];
+
+                //Creation de variable la tempEbu
                 string tempEbu = chainedLiquides[1];
 
+                //Creation de variable coefchauf
                 coefchauf = chainedLiquides[2];
 
+                // affiche la valeur de la chaine
                 Console.WriteLine(i + ") " + nomLiquide + ", Qui possède une température d'ébullition de : " + tempEbu + ", Coefficient de chauffe : " + coefchauf);
+
                 i = i + 1;
             }
+
         }
 
+        //--------------------------------------------------------------------------------------------------------  
+        //création Fonction pour le choix du Liquide
         private void demanderLiquide()
         {
             Console.WriteLine();
             Console.WriteLine("Inscrivez le numéro du Liquide choisis :\n ");
             liqpnumb = Int32.Parse(Console.ReadLine());
 
+            // recupere le recipient choisis par rapport à son numero
             liquideSelectionner = liquides[liqpnumb].ToString().Split(';');
+
+            // creer une variable qui recupere a la premiere position du tableau le nom du recipient
             nomLiquideSelectionner = liquideSelectionner[0];
 
+            // recipient choisis
             Console.WriteLine("Vous avez choisi de " + nomLiquideSelectionner);
         }
-
+        //--------------------------------------------------------------------------------------------------------  
+        //Création fonction pour afficher chaque feu
         private void afficheListeFeu()
         {
+            // creer une variable i qui stocke le nombre de tours
             int i = 0;
 
+            // boucle qui recupere chaque element
             while (feux[i] != null)
             {
-
+                // creer une variable qui stocke la chaine entiere qui contient les informatins
                 chainedFeu = feux[i].ToString().Split(';');
+
+                // creer une variable qui recupere a la premiere position du tableau le nom du recipient
                 nomFeu = chainedFeu[0];
+
+                //Creation de variable la capmax
                 model = chainedFeu[1];
+
+                //Creation de variable matiere
                 marque = chainedFeu[2];
 
+                // affiche la valeur de la chaine
                 Console.WriteLine(i + ") " + nomFeu + ", " + model + ", de la marque :" + marque);
 
+                // on ajoute 1 à i pour chaque fin de tour de boucle
                 i = i + 1;
             }
+
         }
 
+        //--------------------------------------------------------------------------------------------------------
+        //création Fonction pour le choix du Feu
         private void demandeFeu()
         {
             int i = 0;
             Console.WriteLine();
             Console.WriteLine("Inscrivez le numéro de la Plaque choisis :\n ");
             feunumb = Int32.Parse(Console.ReadLine());
-            Console.WriteLine("\n\n");
 
-            string[] feuSelectionner = feux[i].ToString().Split(';');
+            // recupere le recipient choisis par rapport à son numero
+            string[] feuSelectionner = feux[feunumb].ToString().Split(';');
+
+            // creer une variable qui recupere a la premiere position du tableau le nom du recipient
             nomFeuSelectionner = feuSelectionner[0];
             model = feuSelectionner[1];
 
-            Console.WriteLine("Vous avez choisi la plaque qui porte la reference " + nomFeuSelectionner);
+            // recipient choisis
+            Console.WriteLine("Vous avez choisis une " + model);
         }
+        //--------------------------------------------------------------------------------------------------------  
 
         private void demandeVersement()
         {
@@ -532,6 +678,10 @@ namespace SmartPlaque
             Console.WriteLine("Combien de liquide voulez vous versez ? : \n");
             Qte_Liq = Int32.Parse(Console.ReadLine());
             Console.WriteLine("Vous avez versez : {" + Qte_Liq + "} cl ");
+
+
         }
+
+
     }
 }
