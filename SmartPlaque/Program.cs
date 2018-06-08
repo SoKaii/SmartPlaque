@@ -8,7 +8,6 @@ using System.IO;
 
 namespace std
 {
-<<<<<<< HEAD
     static class Constants
     {
         public const Char ExpActif = '0';
@@ -1154,13 +1153,15 @@ namespace std
     }
     class Program
 
-=======
-class Program
->>>>>>> d65559aca74e6a16262953199088385a0d62117c
     {
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
+
         {
-<<<<<<< HEAD
             // int choixRecipient = 1; Retrait JL du 28 / 05 / 2018
             // int choixLiquide = 1; Retrait JL du 28 / 05 / 2018
             // int choixFeu = 1;  Retrait JL du 28 / 05 / 2018
@@ -1176,9 +1177,6 @@ class Program
             //si la comparaison est bonne le lancement du precessus de chauffe se fais automatiquement
 
             Console.ReadLine();
-=======
-            SmartPlaque.IHM Saisie = new SmartPlaque.IHM();
->>>>>>> d65559aca74e6a16262953199088385a0d62117c
         }
 
     }
