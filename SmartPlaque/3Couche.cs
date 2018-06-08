@@ -210,13 +210,13 @@ namespace SmartPlaque
             DAO load = new DAO();
 
             tabRecipient = load.getTabRecipient();
-            listeRecipient = load.getTabRecipient();
+            listeRecipient = tabRecipient;
 
             tabLiquide = load.getTabLiquide();
-            listeLiquide = load.getTabLiquide();
+            listeLiquide = tabLiquide;
 
             tabFeu = load.getTabFeu();
-            listeFeu = load.getTabFeu();
+            listeFeu = tabFeu;
         }
 
         public void Activation(int p_indiceRecipient, int p_indiceLiquide, int p_indiceFeu)  // Ajout du JL du 28/05/2018
@@ -369,6 +369,7 @@ namespace SmartPlaque
                 temperature = a_recipient.get_temperatureLiquideContenu();
                 Console.WriteLine("La temperature du liquide est de {0} degrés \n", a_recipient.get_temperatureLiquideContenu());
             }
+            Console.WriteLine("\n\nTemperature d'ebullition atteinte, l'evaporation commence : \n\n\n");
 
             double diminution = a_recipient.get_volumeActuel();
             while (a_recipient.get_volumeActuel() > 0)
@@ -429,8 +430,6 @@ namespace SmartPlaque
             demandeVersement();
 
             experiance.affectationChoix(recipnumb, liqpnumb, feunumb, Qte_Liq);
-
-
         }
 
         private void demanderRecipient()
